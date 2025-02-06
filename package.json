@@ -1,0 +1,31 @@
+{
+  "name": "real-estate-server",
+  "version": "1.0.0",
+  "description": "This is a internal project which comprises of apis for a real estate app using node.js.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishalguptax/real-estate-server.git"
+  },
+  "author": "vDoIT Technologies Ltd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vishalguptax/real-estate-server/issues"
+  },
+  "homepage": "https://github.com/vishalguptax/real-estate-server#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "eslint": "^9.19.0",
+    "globals": "^15.14.0"
+  }
+}
