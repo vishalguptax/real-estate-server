@@ -18,6 +18,7 @@ export const register = async (req, res, next) =>
     try 
     {
         const user = await registerUserService({ username, email, password, next });
+        if (!user) return;
         return SuccessResponse.created(res, "User created successfully", user);
     } 
     catch (error) 
@@ -46,7 +47,7 @@ export const login = async (req, res, next) =>
       const age = 1000 * 60 * 60 * 24 * 7;
       res.cookie("token", token, {
         httpOnly: true,
-        // secure:true,
+        secure:true,
         maxAge: age,
       })
       .status(200)
