@@ -18,7 +18,7 @@ export const getChat = async(req,res)=>{
         const chat =  await getChatService(req);
         res.status(200).json(chat)
     } catch (error) {
-        res.status(500).json({message:"Internal Server Error : can't get chats"})   
+        res.status(500).json({message:error})   
         
     }
 }

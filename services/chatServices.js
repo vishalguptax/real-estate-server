@@ -4,7 +4,7 @@ import { prisma } from "../prisma/index.js";
 
 // to get chats for the user
 export const getChatsService = async(req,res) =>{
-      //extracts the sender userID from user array
+    //extracts the sender userID from user array
      const UserId = req.userId;
      console.log("User ID in readChatService:", UserId);  // Log userId here
 

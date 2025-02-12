@@ -20,8 +20,8 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
-app.use("api/chats",chatRouter);
-app.use("api/message",messageRouter);
+app.use("/api/chats",chatRouter);
+app.use("/api/message",messageRouter);
 
 
 app.use(errorHandler);
