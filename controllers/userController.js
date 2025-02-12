@@ -32,7 +32,7 @@ export const usercontroller={
  */
   getUser :async (req, res) => {
     try {
-        const user = await getUser();
+        const user = await getUser(req.params.id);
         return SuccessResponse.ok(res, "User retrieved successfully", user);
     } catch (err) {
         console.error("Error in controller:", err);

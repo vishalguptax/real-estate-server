@@ -23,6 +23,9 @@ class ErrorResponse extends Error {
     static notFound(message) {
       return new ErrorResponse(message || 'Not Found', 404);
     }
+    static conflict(message) {
+      return new ErrorResponse(message || 'already exist', 409);
+    }
   
     static internalServer(message) {
       return new ErrorResponse(message || 'Internal Server Error', 500);
