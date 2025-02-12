@@ -21,9 +21,11 @@ export const getPosts =async(req,res)=>{
 export const getPost =async(req,res)=>{
 
     try{
-        const {id}=req.params;//extrecting id
+
+        const {id}=req.params;
+        const postId=parseInt(id)//extrecting id
         const post =await prisma.post.findUnique({
-            where:{id},
+            where:{id:postId},
             include:{
                 postDetail:true,
                 user:{
@@ -34,6 +36,11 @@ export const getPost =async(req,res)=>{
                 },
             },
         });
+        // if (!post) {
+        //     return res.status(404).json({ message: "Post not found" });
+        // }
+        // res.status(200).json(post);
+        
         return res.status(200).json(post)
         // const token =req.cookies?.token;
         // if (token){
@@ -105,7 +112,7 @@ export const addPosts =async(req,res)=>{
 export const updatePost =async(req,res)=>{
 
     try{
-        res.status(200).json()
+        res.status(200).json({message:"Updated"})
     }catch(error){
         console.log(error)
 
