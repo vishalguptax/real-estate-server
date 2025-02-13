@@ -65,11 +65,10 @@ export const addPosts =async(req,res)=>{
             data:{
                 ...body.postData,
                 userId: tokenUserId,
-                // postdetails
                 postDetail:{
-                    create:body.postDetail,
-
-                },
+                    create: body.postDetail,
+                }
+                
             },
         });
         res.status(200).json(newPost);
@@ -127,6 +126,51 @@ export const updatePost = async (req, res) => {
 
 
 // export const updatePost =async(req,res)=>{
+
+    try{
+        res.status(200).json()
+    }catch(error){
+        console.log(error)
+
+        res.status(500).json({message:"Failed to update posts"})
+
+    };
+    
+
+
+
+export const deletePost = async (req, res) => {
+    const id = req.params.id;
+    const tokenUserId = req.userId;
+  
+    try {
+      const post = await prisma.post.findUnique({
+        where: { id },
+        include: { postDetail: true },
+      });
+  
+      if (post.userId !== tokenUserId) {
+        return res.status(403).json({ message: "Not Authorized!" });
+      }
+
+      if (post.postDetail) {
+        await prisma.postDetail.delete({
+            where: { id: post.postDetail.id },
+        });
+        }
+  
+      await prisma.post.delete({
+        where: { id },
+      });
+  
+      res.status(200).json({ message: "Post deleted" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to delete post" });
+    }
+  };
+
+
 
 //      try {
 //           res.status(200).json({message:"updatePost successfully"});
