@@ -8,6 +8,6 @@ const chatRouter = express.Router();
 chatRouter.get("/get",verifyToken,getChats);
 chatRouter.get("/:id",verifyToken,getChat);
 chatRouter.post("/add",verifyToken,addChat);
-chatRouter.put("/read/:id",verifyToken,readChat);
+chatRouter.put("/read/:chatid",verifyToken,readChat);
 
 export {chatRouter}
