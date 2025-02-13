@@ -21,7 +21,7 @@ export const getPosts =async(req,res)=>{
 export const getPost =async(req,res)=>{
 
     try{
-        const {id}=req.params;//extrecting id
+        const {id}=req.params;  
         const post =await prisma.post.findUnique({
             where:{id},
             include:{
@@ -78,11 +78,10 @@ export const addPosts =async(req,res)=>{
             data:{
                 ...body.postData,
                 userId: tokenUserId,
-                // postdetails
                 postDetail:{
-                    create:body.postDetail,
-
-                },
+                    create: body.postDetail,
+                }
+                
             },
         });
         res.status(200).json(newPost);
@@ -116,29 +115,75 @@ export const updatePost =async(req,res)=>{
 }
 
 
+export const deletePost = async (req, res) => {
+    const id = req.params.id;
+    const tokenUserId = req.userId;
+  
+    try {
+      const post = await prisma.post.findUnique({
+        where: { id },
+        include: { postDetail: true },
+      });
+  
+      if (post.userId !== tokenUserId) {
+        return res.status(403).json({ message: "Not Authorized!" });
+      }
 
-// export const deletePosts =async(req,res)=>{
-//     const id=req.params.id;
-//     const tokenUserId =req.userId
+      if (post.postDetail) {
+        await prisma.postDetail.delete({
+            where: { id: post.postDetail.id },
+        });
+        }
+  
+      await prisma.post.delete({
+        where: { id },
+      });
+  
+      res.status(200).json({ message: "Post deleted" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to delete post" });
+    }
+  };
 
 
-//     try{
-//         const post =await prisma.post.findUnique({
-//             where:{id:id},
-//         })
-//         if(!post){
-//             return res.status(404).json({message:"Post not found"});
-//         }
-//         if(post.userId!==tokenUserId){
-//             return res.status(403).json({message:"Not Authorized!"})
-//         };
-//         await prisma.post.delete({message:"Post deleted"})
-//         res.status(200).json()
-//     }catch(error){
-//         console.log(error)
 
-//         res.status(500).json({message:"Failed to delete posts"})
+  export const savePost = async (req, res) => {
+    const postid = req.body.postid;
+    const tokenUserId = req.userId;
+  
+    try {
+      
+        const savedPost = await prisma.savedPost.findUnique({
+            where:{
+                userId_postId:{
+                    userId: tokenUserId,
+                    postId,
+                }
+            }
+        })
 
-//     };
-    
-// }
+        if(savedPost){
+            await prisma.savedPost.delete({
+                where: {
+                    id: savedPost.id,
+                }
+            });
+            res.status(200).json({ message: "Post removed from saved list" });
+        }
+        else{
+            await prisma.savedPost.create({
+                data: {
+                    userId: tokenUserId,
+                    postId,
+                }
+            });
+            res.status(200).json({ message: "Post removed from saved list" });
+        }
+
+      
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to delete post" });
+    }
+  };
