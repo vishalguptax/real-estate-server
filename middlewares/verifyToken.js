@@ -12,6 +12,7 @@ export const verifyToken = (req, res, next) => {
   console.log("🔍 Checking for token in cookies:", req.cookies);
 
   const token = req.cookies.token;
+  // console.log(token)
   if (!token) {
     console.log("❌ No token found!");
     return next(ErrorResponse.unauthorized("Not Authenticated!"));
@@ -22,7 +23,7 @@ export const verifyToken = (req, res, next) => {
       console.log("❌ Token verification failed:", err);
       return next(ErrorResponse.forbidden("Token is not Valid!"));
     }
-
+    
     req.userId = payload.id;  // Ensure the payload contains `id`
     console.log("✅ Token verified! User ID:", req.userId);
 
