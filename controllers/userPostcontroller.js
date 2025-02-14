@@ -1,23 +1,24 @@
 import { prisma } from "./../prisma/index.js"
 
+
+// to get all posts
 export const getPosts =async(req,res)=>{
 
     try{
-        const posts =await prisma.post.findMany()
+        const posts = await prisma.post.findMany()
+        console.log(posts)
         res.status(200).json(posts)
     }catch(error){
         console.log(error)
 
-        res.status(500).json({message:"Failed to get posts"})
+        res.status(500).json({message:error})
 
     };
     
 }
 
 
-
-
-
+// get post by id
 export const getPost =async(req,res)=>{
 
     try{
@@ -51,23 +52,21 @@ export const getPost =async(req,res)=>{
     
 };
 
-
-
-
-
+// to add or create new post
 
 export const addPosts =async(req,res)=>{
-    const body =req.body;
-    const tokenUserId = req.userId;
 
     try{
+
+        const body =req.body;
+        const tokenUserId = req.userId;
         const newPost =await prisma.post.create({
             data:{
                 ...body.postData,
                 userId: tokenUserId,
                 postDetail:{
                     create: body.postDetail,
-                }
+                },
                 
             },
         });
@@ -75,15 +74,13 @@ export const addPosts =async(req,res)=>{
     }catch(error){
         console.log(error)
 
-        res.status(500).json({message:"Failed to create post"})
+        res.status(500).json({message:error})
 
     };
     
 }
 
-
-
-
+// to update post content
 export const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
@@ -122,23 +119,7 @@ export const updatePost = async (req, res) => {
     }
 };
 
-
-
-
-// export const updatePost =async(req,res)=>{
-
-    try{
-        res.status(200).json()
-    }catch(error){
-        console.log(error)
-
-        res.status(500).json({message:"Failed to update posts"})
-
-    };
-    
-
-
-
+// to delete the post
 export const deletePost = async (req, res) => {
     const id = req.params.id;
     const tokenUserId = req.userId;
@@ -169,15 +150,4 @@ export const deletePost = async (req, res) => {
       res.status(500).json({ message: "Failed to delete post" });
     }
   };
-
-
-
-//      try {
-//           res.status(200).json({message:"updatePost successfully"});
-//         } catch (err) {
-//           console.log(err);
-//           res.status(500).json({ message: "Failed to update posts" });
-//         }
-//       };
-
 
