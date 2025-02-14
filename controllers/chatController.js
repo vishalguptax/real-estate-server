@@ -5,6 +5,9 @@ import { getChatService,getChatsService,addChatService,readChatService } from ".
 
 // to get all the chats
 export const getChats = async(req,res)=>{
+
+    //extracts the sender userID from user array
+    const UserId = req.userId;
     try {
         const chats = await getChatsService(req);
         //res.status(200).json(chats)
@@ -14,8 +17,11 @@ export const getChats = async(req,res)=>{
     }
 }
 
+
 //to get the chat
 export const getChat = async(req,res)=>{
+     //extracts the sender userID from user array
+     const UserId = req.userId;
     try {
         const chat =  await getChatService(req);
         //res.status(200).json(chat)
@@ -29,6 +35,7 @@ export const getChat = async(req,res)=>{
 
 // to add chat
 export const addChat = async(req,res)=>{
+    const UserId = req.userId;
 
     try {
         const addChat =  await addChatService(req);
@@ -43,6 +50,7 @@ export const addChat = async(req,res)=>{
 
 // to read the chat 
 export const readChat = async(req,res)=>{
+    const UserId = req.userId;
     try {
         const readChat = await readChatService(req);
         //res.status(200).json(readChat);

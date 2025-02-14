@@ -11,7 +11,7 @@ dotenv.config({
     path: "./.env",
 })
 
-
+//const PORT = process.env.APP_PORT;
 const app = express();
 
 
@@ -26,8 +26,8 @@ app.use("/api/message",messageRouter);
 app.use("/api/user",router);
 
 app.use(errorHandler);
-//const PORT = process.env.APP_PORT||5000;
-const PORT = 4000
+const PORT = process.env.APP_PORT||5000;
+//const PORT = 4000
 app.listen(PORT, () => {
     console.log(`Server is working on port: ${PORT}`)
 })
