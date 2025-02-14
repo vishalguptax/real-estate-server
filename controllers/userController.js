@@ -16,7 +16,7 @@ export const usercontroller={
  * getUsersController - Retrieves all users.
  * @returns {Object} - Returns a list of users.
  */
- getUsers:async (req, res) => {
+ getUsers: async (req, res) => {
     try {
         const users = await getUsers();
         return SuccessResponse.ok(res, "Users retrieved successfully", users);

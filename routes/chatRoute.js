@@ -6,8 +6,8 @@ const chatRouter = express.Router();
 
 //define the method and routes
 chatRouter.get("/get",verifyToken,getChats);
-chatRouter.get("/:id",verifyToken,getChat);
+chatRouter.get("/:chatId",verifyToken,getChat);
 chatRouter.post("/add",verifyToken,addChat);
-chatRouter.put("/read/:id",verifyToken,readChat);
+chatRouter.put("/read/:chatId",verifyToken,readChat);
 
 export {chatRouter}
