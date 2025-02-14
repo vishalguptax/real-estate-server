@@ -93,19 +93,19 @@ export const updatePost = async (req, res) => {
 
         // Find the existing post
         const existingPost = await prisma.post.findUnique({
-            where: { id } // Keep id as a string if it's stored as a string in DB
+            where: { id } 
         });
 
         if (!existingPost) {
             return res.status(404).json({ message: "Post not found" });
         }
 
-        // Ensure the user updating the post is the owner
+        
         if (existingPost.userId !== tokenUserId) {
             return res.status(403).json({ message: "Unauthorized to update this post" });
         }
 
-        // Update the post
+    
         const updatedPost = await prisma.post.update({
             where: { id },
             data: {
