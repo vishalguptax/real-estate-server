@@ -1,3 +1,5 @@
+import ErrorResponse from "../helpers/errorResponse.js"
+import SuccessResponse from "../helpers/successResponse.js"
 import { prisma } from "./../prisma/index.js"
 
 
@@ -7,12 +9,12 @@ export const getPosts =async(req,res)=>{
     try{
         const posts = await prisma.post.findMany()
         console.log(posts)
-        res.status(200).json(posts)
+      
+        return SuccessResponse.ok({res,meassage:"all posts",posts})
     }catch(error){
         console.log(error)
-
-        res.status(500).json({message:error})
-
+     
+        return ErrorResponse.internalServer({res, message:"can't reterive all posts"})
     };
     
 }
@@ -23,7 +25,7 @@ export const getPost =async(req,res)=>{
 
     try{
 
-        const {id}=req.params;
+        const {id}=req.params.id;
         const postId=parseInt(id)
         const post =await prisma.post.findUnique({
             where:{id:postId},
@@ -38,15 +40,18 @@ export const getPost =async(req,res)=>{
             },
         });
         if (!post) {
-            return res.status(404).json({ message: "Post not found" });
+            //return res.status(404).json({ message: "Post not found" });
+            return ErrorResponse.notFound({res,message: "Post not found" })
         }
-        res.status(200).json(post);
-        
-        return res.status(200).json(post)
-       
+        //return res.status(200).json(post)
+        return SuccessResponse.ok({res,meassage:"find a post",post})
+
+
     }catch(error){
   
-        res.status(500).json({message:error})
+        //res.status(500).json({message:error})
+        return ErrorResponse.internalServer({res, message:"can't reterive the posts"})
+
 
     }
     
@@ -70,11 +75,14 @@ export const addPosts =async(req,res)=>{
                 
             },
         });
-        res.status(200).json(newPost);
+        //res.status(200).json(newPost);
+        return SuccessResponse.ok({res,meassage:"new post created successfully",newPost})
+
     }catch(error){
         console.log(error)
+        //res.status(500).json({message:error})
+        return ErrorResponse.internalServer({res, message:"can't create new posts"})
 
-        res.status(500).json({message:error})
 
     };
     
@@ -93,12 +101,16 @@ export const updatePost = async (req, res) => {
         });
 
         if (!existingPost) {
-            return res.status(404).json({ message: "Post not found" });
+          //  return res.status(404).json({ message: "Post not found" });
+          return ErrorResponse.notFound({res,message: "Post not found" })
+
         }
 
         
         if (existingPost.userId !== tokenUserId) {
-            return res.status(403).json({ message: "Unauthorized to update this post" });
+           // return res.status(403).json({ message: "Unauthorized to update this post" });
+           return ErrorResponse.forbidden({res,message: "Unauthorized to update this post" })
+
         }
 
     
@@ -112,10 +124,15 @@ export const updatePost = async (req, res) => {
             },
         });
 
-        res.status(200).json(updatedPost);
+        // res.status(200).json(updatedPost);
+        return SuccessResponse.ok({res,meassage:" post updated successfully",updatePost})
+        
+        
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: err });
+        //res.status(500).json({ message: err });
+        return ErrorResponse.internalServer({res, message:"can't update posts"})
+
     }
 };
 
@@ -131,7 +148,9 @@ export const deletePost = async (req, res) => {
       });
   
       if (post.userId !== tokenUserId) {
-        return res.status(403).json({ message: "Not Authorized!" });
+        //return res.status(403).json({ message: "Not Authorized!" });
+        return ErrorResponse.forbidden({res,message: "Unauthorized to delete this post" })
+
       }
 
       if (post.postDetail) {
@@ -144,10 +163,14 @@ export const deletePost = async (req, res) => {
         where: { id },
       });
   
-      res.status(200).json({ message: "Post deleted" });
+      //res.status(200).json({ message: "Post deleted" });
+      return SuccessResponse.ok({res,meassage:" post deleted successfully"})
+
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: "Failed to delete post" });
+     // res.status(500).json({ message: "Failed to delete post" });
+     return ErrorResponse.internalServer({res, message:"can't delete posts"})
+
     }
   };
 
