@@ -20,26 +20,26 @@ export const getChatsService = async(req,res) =>{
     });
     console.log(chats)
 
-    //find the recevier and its information
+//   //  find the recevier and its information
 
-    // for(const chat of chats)
-    // {
-    //     const receiverId = chat.userIDs.find(
-    //         (id) => id !== UserId);
+//     for(const chat of chats)
+//     {
+//         const receiverId = chat.userIDs.find(
+//             (id) => id !== UserId);
         
-    //     const receiver = await prisma.user.findUnique({
-    //         where:{
-    //             id:receiverId,
-    //         },
-    //         select:{
-    //             id:true,
-    //             username:true,
-    //             avatar:true,
-    //         },
-    //     });
-    //     // attach receiver info to object
-    //     chat.receiver=receiver;
-    // }
+//         const receiver = await prisma.user.findUnique({
+//             where:{
+//                 id:receiverId,
+//             },
+//             select:{
+//                 id:true,
+//                 username:true,
+//                 avatar:true,
+//             },
+//         });
+//         // attach receiver info to object
+//         chat.receiver=receiver;
+//     }
 
     //return chat data
     return chats;

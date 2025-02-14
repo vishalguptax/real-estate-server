@@ -1,4 +1,3 @@
-
 import ErrorResponse from "../helpers/errorResponse.js";
 import SuccessResponse from "../helpers/successResponse.js";
 import { getChatService,getChatsService,addChatService,readChatService } from "../services/chatServices.js";
@@ -10,12 +9,11 @@ export const getChats = async(req,res)=>{
     //extracts the sender userID from user array
     const UserId = req.userId;
     try {
-        const chats = await getChatsService(UserId);
-       // res.status(200).json(chats)
-       return SuccessResponse.ok({res,message:"success",chats})
+        const chats = await getChatsService(req);
+        //res.status(200).json(chats)
+        return SuccessResponse.ok(res,"chats retreived succesfully",chats)
     } catch (error) {
-       // res.status(500).json({message:"Internal Server Error : can't get chats"})   
-       return ErrorResponse.internalServer({res,message:error})
+        return ErrorResponse.internalServer(res, "Failed to get chat");
     }
 }
 
@@ -25,12 +23,11 @@ export const getChat = async(req,res)=>{
      //extracts the sender userID from user array
      const UserId = req.userId;
     try {
-        const chat = await getChatService();
+        const chat =  await getChatService(req);
         //res.status(200).json(chat)
-        return SuccessResponse.ok({res,message:"success",chat})
+        return SuccessResponse.ok(res,"chats retreived succesfully",chat)
     } catch (error) {
-       // res.status(500).json({message:"Internal Server Error : can't get chats"})   
-       return ErrorResponse.internalServer({res,message:error})
+        return ErrorResponse.internalServer(res, {messgae:error});
         
     }
 }
@@ -41,14 +38,12 @@ export const addChat = async(req,res)=>{
     const UserId = req.userId;
 
     try {
-        const addChat = await addChatService();
-        //res.status(200).json(addChat);
-        return SuccessResponse.ok({res,message:"success",addChat})
-
+        const addChat =  await addChatService(req);
+        //return res.status(200).json(addChat);
+        return SuccessResponse.created(res,"users added to chat succesfully",addChat)
+        
     } catch (error) {
-       // res.status(500).json({message:"Internal Server Error : can't get chats"})   
-       return ErrorResponse.internalServer({res,message:error})
-
+        return ErrorResponse.internalServer(res, {messgae:"failed to add chat"});
     }
 }
 
@@ -57,13 +52,10 @@ export const addChat = async(req,res)=>{
 export const readChat = async(req,res)=>{
     const UserId = req.userId;
     try {
-        const readChat = await readChatService();
+        const readChat = await readChatService(req);
         //res.status(200).json(readChat);
-        return SuccessResponse.ok({res,message:"success",readChat})
-
+        return SuccessResponse.ok(res,"read chat succesfully",readChat)
     } catch (error) {
-        //res.status(500).json({message:"Internal Server Error : can't get chats"})   
-       return ErrorResponse.internalServer({res,message:error})
-
+        return ErrorResponse.internalServer(res, {messgae:"failed to read chat"});
     }
 }
