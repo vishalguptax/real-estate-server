@@ -11,37 +11,9 @@ export const getChatsService = async(req,res) =>{
      if (!UserId) {
        return res.status(400).send('User ID is missing');
      }
-    const chats = await prisma.chat.findMany({
-        where:{
-            userIDs :{
-                hasSome:[UserId],
-            },
-        },
-    });
+    const chats = await prisma.chat.findMany();
     console.log(chats)
 
-//   //  find the recevier and its information
-
-//     for(const chat of chats)
-//     {
-//         const receiverId = chat.userIDs.find(
-//             (id) => id !== UserId);
-        
-//         const receiver = await prisma.user.findUnique({
-//             where:{
-//                 id:receiverId,
-//             },
-//             select:{
-//                 id:true,
-//                 username:true,
-//                 avatar:true,
-//             },
-//         });
-//         // attach receiver info to object
-//         chat.receiver=receiver;
-//     }
-
-    //return chat data
     return chats;
 }
 
@@ -108,3 +80,41 @@ export const readChatService = async(req,res) =>{
       });
       return ReadChat;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   //  find the recevier and its information
+
+//     for(const chat of chats)
+//     {
+//         const receiverId = chat.userIDs.find(
+//             (id) => id !== UserId);
+        
+//         const receiver = await prisma.user.findUnique({
+//             where:{
+//                 id:receiverId,
+//             },
+//             select:{
+//                 id:true,
+//                 username:true,
+//                 avatar:true,
+//             },
+//         });
+//         // attach receiver info to object
+//         chat.receiver=receiver;
+//     }
+
+    //return chat data

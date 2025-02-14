@@ -6,7 +6,7 @@ import { errorHandler } from "./helpers/errorHandler.js";
 import userRoute from './routes/userRoute.js';
 import { chatRouter } from "./routes/chatRoute.js";
 import { messageRouter } from "./routes/messageRoute.js";
-import router from "./routes/auth.route.js";
+import router from "./routes/userPostroute.js";
 dotenv.config({
     path: "./.env",
 })
@@ -22,7 +22,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/chats",chatRouter);
 app.use("/api/message",messageRouter);
-app.use("/api/user",router);
+app.use("/api/posts",router);
 
 app.use(errorHandler);
 //const PORT = process.env.APP_PORT||5000;

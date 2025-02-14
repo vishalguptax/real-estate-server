@@ -53,9 +53,12 @@ export const readChat = async(req,res)=>{
     const UserId = req.userId;
     try {
         const readChat = await readChatService(req);
+        console.log(readChat)
         //res.status(200).json(readChat);
         return SuccessResponse.ok(res,"read chat succesfully",readChat)
+      
     } catch (error) {
         return ErrorResponse.internalServer(res, {messgae:"failed to read chat"});
+        
     }
 }
