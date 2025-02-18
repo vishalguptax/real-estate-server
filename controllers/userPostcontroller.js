@@ -2,8 +2,13 @@ import ErrorResponse from "../helpers/errorResponse.js"
 import SuccessResponse from "../helpers/successResponse.js"
 import { prisma } from "./../prisma/index.js"
 
+/**
+ * getPosts                 - It is used to get the all posts
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-// to get all posts
 export const getPosts =async(req,res)=>{
 
     try{
@@ -19,8 +24,13 @@ export const getPosts =async(req,res)=>{
     
 }
 
+/**
+ * getPost                 - It is used to get a particullar post by id
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-// get post by id
 export const getPost =async(req,res)=>{
 
     try{
@@ -40,29 +50,26 @@ export const getPost =async(req,res)=>{
             },
         });
         if (!post) {
-            //return res.status(404).json({ message: "Post not found" });
             return ErrorResponse.notFound({res,message: "Post not found" })
         }
-        //return res.status(200).json(post)
         return SuccessResponse.ok({res,meassage:"find a post",post})
-
-
     }catch(error){
-  
-        //res.status(500).json({message:error})
         return ErrorResponse.internalServer({res, message:"can't reterive the posts"})
-
-
-    }
-    
+  
+    }  
 };
 
-// to add or create new post
+/**
+ * addPosts                 - It is used to add/create the new post
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-export const addPosts =async(req,res)=>{
 
+export const addPosts =async(req,res)=>{    
+   
     try{
-
         const body =req.body;
         const tokenUserId = req.userId;
         const newPost =await prisma.post.create({
@@ -83,12 +90,15 @@ export const addPosts =async(req,res)=>{
         //res.status(500).json({message:error})
         return ErrorResponse.internalServer({res, message:"can't create new posts"})
 
-
-    };
-    
+    }; 
 }
+/**
+ * updatePost               - It is used to update a particular post
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-// to update post content
 export const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
@@ -101,19 +111,13 @@ export const updatePost = async (req, res) => {
         });
 
         if (!existingPost) {
-          //  return res.status(404).json({ message: "Post not found" });
           return ErrorResponse.notFound({res,message: "Post not found" })
 
-        }
-
-        
+        }        
         if (existingPost.userId !== tokenUserId) {
-           // return res.status(403).json({ message: "Unauthorized to update this post" });
            return ErrorResponse.forbidden({res,message: "Unauthorized to update this post" })
 
         }
-
-    
         const updatedPost = await prisma.post.update({
             where: { id },
             data: {
@@ -124,19 +128,23 @@ export const updatePost = async (req, res) => {
             },
         });
 
-        // res.status(200).json(updatedPost);
         return SuccessResponse.ok({res,meassage:" post updated successfully",updatePost})
-        
         
     } catch (err) {
         console.log(err);
-        //res.status(500).json({ message: err });
         return ErrorResponse.internalServer({res, message:"can't update posts"})
 
     }
 };
 
-// to delete the post
+
+/**
+ * deletePost               - It is used to delete a particular posts
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
+
 export const deletePost = async (req, res) => {
     const id = req.params.id;
     const tokenUserId = req.userId;

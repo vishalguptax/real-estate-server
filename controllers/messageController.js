@@ -5,12 +5,17 @@ import SuccessResponse from "../helpers/successResponse.js";
 import { prisma } from "../prisma/index.js";
 import { addMessageService } from "../services/messageServices.js";
 
+/**
+ * addMessages              - It calls the addMessageServices to start the chat or send the messages
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-// to get all the chats
-export const addMessage = async(req,res)=>{
+export const addMessage = async(req,res,next)=>{
 
     const UserId = req.userId;
-    const chatId = req.params.chatId;
+    const chatId = req.params.id;
     const text = req.body.text;
 
     try {
@@ -27,7 +32,7 @@ export const addMessage = async(req,res)=>{
 
         //if chat not found
         if(!chat){
-            return ErrorResponse.badRequest(res, "chat not found");
+            return next(ErrorResponse.badRequest(res, "chat not found"));
         }
 
         // call add message service
@@ -36,6 +41,6 @@ export const addMessage = async(req,res)=>{
         return SuccessResponse.ok(res,"chats retreived succesfully",message)
         
     } catch (error) {
-        return ErrorResponse.internalServer(res, "Failed to add message");
+        return next(ErrorResponse.internalServer(res, "Failed to add message"));
     }
 }
