@@ -6,6 +6,6 @@ import { verifyToken } from "../middlewares/verifyToken.js";
 //creating instance for message router
 const messageRouter = express.Router();
 
-messageRouter.post("/:chatId",verifyToken,addMessage)
+messageRouter.post("/:id",verifyToken,addMessage)
 
 export {messageRouter}

@@ -1,12 +1,15 @@
 
 import { prisma } from "../prisma/index.js";
 
-
-// to get chats for the user
-export const getChatsService = async(req,res) =>{
-    //extracts the sender userID from user array
-     const UserId = req.userId;
-     console.log("User ID in readChatService:", UserId);  // Log userId here
+/**
+ * getChatsServices      - It shows all the chats.
+ * @param {String} UserId - UserId of the user
+ * @param {String} res    - response of the user
+ * @returns {Object} chats   - Returns the chats object
+ */
+export const getChatsService = async(UserId,res) =>{
+    
+     console.log("User ID in getChatService:", UserId);  // Log userId here
 
      if (!UserId) {
        return res.status(400).send('User ID is missing');
@@ -17,9 +20,15 @@ export const getChatsService = async(req,res) =>{
     return chats;
 }
 
-export const getChatService = async(req,res) =>{
-    //extracts the sender userID from user array
-    const UserId = req.userId;
+/**
+ * getChatServices      - It shows a chat of a user.
+ * @param {String} UserId - UserId of the user
+ * @param {String} req    - request used to get chatId of the user
+ * @returns {Object} chat   - Returns the chat object
+ */
+export const getChatService = async(req,UserId) =>{
+    console.log(req.params.id)
+    console.log("0");
     const chat = await prisma.chat.findUnique({
         where:{
             id:req.params.id,
@@ -35,7 +44,7 @@ export const getChatService = async(req,res) =>{
             },
         },
     });
-
+console.log("1");
     await prisma.chat.update({
         where:{
             id:req.params.id,
@@ -46,25 +55,39 @@ export const getChatService = async(req,res) =>{
             },
         },
     });
+console.log("2");
+
     return chat;
     
 }
 
-export const addChatService = async(req,res) =>{
-          //extracts the sender userID from user array
-    const UserId = req.userId;
+/**
+ * addChatServices      - It generates a new user.
+ * @param {String} UserId - UserId of the user
+ * @param {String} req    - request used to get chatId of the user
+ * @returns {Object} newChat   - Returns the newChat object
+ */
+export const addChatService = async(req,UserId) =>{
+    
     const newChat = await prisma.chat.create({
         data:{
             userIDs : [UserId, req.body.receiverId],
+            lastMessage: 'Chat created',
         },
 
     });
     return (newChat);
 }
 
-export const readChatService = async(req,res) =>{
-      //extracts the sender userID from user array
-      const UserId = req.userId;
+/**
+ * readChatServices      - It generates a new user.
+ * @param {String} UserId - UserId of the user
+ * @param {String} req    - request used to get chatId of the user
+ * @returns {Object} ReadChat   - Returns the ReadChat object
+ */
+export const readChatService = async(req,UserId) =>{
+     
+      console.log(`${UserId} and ${req.params.id}`)
     const ReadChat = await prisma.chat.update({
         where: {
           id: req.params.id,

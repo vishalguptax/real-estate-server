@@ -3,8 +3,14 @@ import SuccessResponse from "../helpers/successResponse.js";
 import { getChatService,getChatsService,addChatService,readChatService } from "../services/chatServices.js";
 
 
-// to get all the chats
-export const getChats = async(req,res)=>{
+/**
+ * getChats                 - It calls the getChatsServices to retrieve all the chats
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
+
+export const getChats = async(req,res,next)=>{
 
     //extracts the sender userID from user array
     const UserId = req.userId;
@@ -13,28 +19,40 @@ export const getChats = async(req,res)=>{
         //res.status(200).json(chats)
         return SuccessResponse.ok(res,"chats retreived succesfully",chats)
     } catch (error) {
-        return ErrorResponse.internalServer(res, "Failed to get chat");
+        return next(ErrorResponse.internalServer(res, "Failed to get chat"));
     }
 }
 
+/**
+ * getChat                  - It calls the getChatServices to retrieve the chat of a user
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-//to get the chat
-export const getChat = async(req,res)=>{
+export const getChat = async(req,res,next)=>{
      //extracts the sender userID from user array
      const UserId = req.userId;
     try {
-        const chat =  await getChatService(req);
+
+        const chat =  await getChatService(req, UserId);
         //res.status(200).json(chat)
+        console.log(chat)
         return SuccessResponse.ok(res,"chats retreived succesfully",chat)
     } catch (error) {
-        return ErrorResponse.internalServer(res, {messgae:error});
+        return next(ErrorResponse.internalServer(res, {messgae:error}));
         
     }
 }
 
+/**
+ * addChat                  - It calls the addChatsServices to create a new chatId or chatroom for user
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-// to add chat
-export const addChat = async(req,res)=>{
+export const addChat = async(req,res,next)=>{
     const UserId = req.userId;
 
     try {
@@ -43,22 +61,28 @@ export const addChat = async(req,res)=>{
         return SuccessResponse.created(res,"users added to chat succesfully",addChat)
         
     } catch (error) {
-        return ErrorResponse.internalServer(res, {messgae:"failed to add chat"});
+        return next(ErrorResponse.internalServer(res, {messgae:"failed to add chat"}));
     }
 }
 
+/**
+ * readChat                 - It calls the readChatServices to read the chat and update it using seenBy
+ * @param {Object} req      - Express request object
+ * @param {Object} res      - Express response object
+ * @param {Function} next   - Express next function
+ */
 
-// to read the chat 
-export const readChat = async(req,res)=>{
+export const readChat = async(req,res,next)=>{
     const UserId = req.userId;
     try {
-        const readChat = await readChatService(req);
+        const readChat = await readChatService(req,UserId);
         console.log(readChat)
         //res.status(200).json(readChat);
         return SuccessResponse.ok(res,"read chat succesfully",readChat)
       
     } catch (error) {
-        return ErrorResponse.internalServer(res, {messgae:"failed to read chat"});
+       return next(ErrorResponse.internalServer());
+       //console.log(error)
         
     }
 }
