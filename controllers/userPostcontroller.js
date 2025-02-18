@@ -6,7 +6,7 @@ import { prisma } from "./../prisma/index.js"
  * getPosts                 - It is used to get the all posts
  * @param {Object} req      - Express request object
  * @param {Object} res      - Express response object
- * @param {Function} next   - Express next function
+ * return posts object having all the posts
  */
 
 export const getPosts =async(req,res)=>{
@@ -28,7 +28,7 @@ export const getPosts =async(req,res)=>{
  * getPost                 - It is used to get a particullar post by id
  * @param {Object} req      - Express request object
  * @param {Object} res      - Express response object
- * @param {Function} next   - Express next function
+ * return post object by id
  */
 
 export const getPost =async(req,res)=>{
@@ -63,7 +63,7 @@ export const getPost =async(req,res)=>{
  * addPosts                 - It is used to add/create the new post
  * @param {Object} req      - Express request object
  * @param {Object} res      - Express response object
- * @param {Function} next   - Express next function
+ * return newPost
  */
 
 
@@ -96,7 +96,7 @@ export const addPosts =async(req,res)=>{
  * updatePost               - It is used to update a particular post
  * @param {Object} req      - Express request object
  * @param {Object} res      - Express response object
- * @param {Function} next   - Express next function
+ * return updatedPost
  */
 
 export const updatePost = async (req, res) => {
@@ -142,7 +142,7 @@ export const updatePost = async (req, res) => {
  * deletePost               - It is used to delete a particular posts
  * @param {Object} req      - Express request object
  * @param {Object} res      - Express response object
- * @param {Function} next   - Express next function
+ * return message for deleted post
  */
 
 export const deletePost = async (req, res) => {
